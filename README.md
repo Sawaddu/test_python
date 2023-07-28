@@ -75,9 +75,9 @@ https://www.python.com
 ![kids](./images/kids.jpg)
 
 </br>
-<img src="./images/kids.jpg" width="400" title="Kids image">
+<img src="./images/kids.jpg" width="400" title="Kids">
 
-
+..Good Bye..
 <!--all link is here-->
 [Java]:https://www.python.com
 
