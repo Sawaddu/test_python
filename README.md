@@ -77,7 +77,7 @@ https://www.python.com
 </br>
 <img src="./images/kids.jpg" width="400" title="Kids">
 
-..Good Bye..
+..Good Bye Guyes..
 <!--all link is here-->
 [Java]:https://www.python.com
 
