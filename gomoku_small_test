@@ -1,0 +1,217 @@
+game_menu
+#=======================
+def game_menu():
+  """Displays the game menu.
+
+  This function does not accept any parameters and does not return any value.
+  """
+
+  print("\n -----------Welcome to the game of Go! ------------------\n")
+  print("Please select an option from the menu: \n")
+  print("1. Start a Game")
+  print("2. Print the Board")
+  print("3. Place a Stone")
+  print("4. Reset the Game")
+  print("5. Exit")
+
+  choice = input("Enter your choice: ")
+
+  while choice not in ["1", "2", "3", "4", "5"]:
+    print("Invalid choice. Please enter a number from 1 to 5.")
+    choice = input("Enter your choice: ")
+
+  return choice
+
+choice = game_menu()
+
+if choice == "1":
+    print("Start a new game.")
+elif choice == "2":
+    print("Print the board.")
+elif choice == "3":
+    print("Place a stone.")
+elif choice == "4":
+    print("Reset the game.")
+elif choice == "5":
+    print("Exit the game.")
+  
+#============================
+
+
+
+
+#create_board(size)
+#================================
+
+def create_board(size):
+  """Creates a data structure to keep track of the states of the boards.
+
+  Args:
+    size: The size of the board.
+
+  Returns:
+    A data structure representing the board, where each intersection is unoccupied.
+  """
+
+  # Use a 2D list to represent the board.
+  board = [[0 for _ in range(size)] for _ in range(size)]
+
+  # Iterate over the board and set all intersections to be unoccupied.
+  for i in range(size):
+    for j in range(size):
+      board[i][j] = 0
+
+  return board
+board = create_board(9)
+print(board)
+
+#=======================
+
+def create_board(size):
+  """Creates a data structure to keep track of the states of the boards.
+
+  Args:
+    size: The size of the board.
+
+  Returns:
+    A data structure representing the board, where each intersection is unoccupied.
+  """
+
+  # We can use a list of lists to represent the board. Each inner list will represent
+  # a row on the board.
+
+  board = []
+  for i in range(size):
+    row = []
+    for j in range(size):
+      row.append(0)
+    board.append(row)
+
+  # The value 0 will be used to represent an unoccupied intersection.
+
+  return board
+board = create_board(9)
+print(board)
+
+
+#=========================
+def create_board(size):
+  """Creates a data structure to keep track of the states of the boards.
+
+  Args:
+    size: The size of the board.
+
+  Returns:
+    A data structure representing the board, where each intersection is unoccupied.
+  """
+
+  # Use a 2D list to represent the board.
+  board = [[0 for _ in range(size)] for _ in range(size)]
+
+  # Initialize all intersections to be unoccupied.
+  for i in range(size):
+    for j in range(size):
+      board[i][j] = 0
+
+  return board
+
+board = create_board(9)
+print(board)
+#==============================
+# is_occupied
+#===================
+
+def is_occupied(board, x, y):
+  """Checks whether a specific position on the board is occupied by a stone.
+
+  Args:
+    board: The current state of the board.
+    x: The row index.
+    y: The column index.
+
+  Returns:
+    True if the position is occupied, False otherwise.
+  """
+
+  if board[x][y] != 0:
+    return True
+  else:
+    return False
+
+
+board = [[0, 0, 0], [0, 1, 0], [0, 0, 0]]
+
+print(is_occupied(board, 0, 0))  # True
+print(is_occupied(board, 1, 1))  # True
+print(is_occupied(board, 2, 2))  # False
+
+#========================
+# place_on_board
+#========================
+
+def place_on_board(board, stone, position):
+  """Places a stone on the board at the given position.
+
+  Args:
+    board: The current state of the board.
+    stone: The stone to be placed (either "●" or "○").
+    position: The position to place the stone (a tuple of strings (a, b) where a is the row
+      index and b is the column index).
+
+  Returns:
+    True if the move is successfully performed, False otherwise.
+  """
+
+  row, col = position
+
+  if not is_valid_position(board, row, col):
+    return False
+
+  if is_occupied(board, row, col):
+    return False
+
+  board[row][col] = stone
+
+  return True
+
+board = [[0, 0, 0], [0, 1, 0], [0, 0, 0]]
+
+print(place_on_board(board, "●", (0, 0)))  # True
+print(place_on_board(board, "○", (0, 0)))  # False
+print(place_on_board(board, "●", (1, 1)))  # True
+#=======================================
+
+def create_board(size):
+    # Create a list of lists to represent the board
+    board = [[' ' for _ in range(size)] for _ in range(size)]
+    return board
+
+def place_on_board(board, stone, position):
+    x, y = position
+    if x.isdigit() and y.isalpha():
+        x = int(x)
+        y = ord(y.upper()) - ord('A')
+        if 0 <= x < len(board) and 0 <= y < len(board[0]) and not is_occupied(board, x, y):
+            board[x][y] = stone
+            return True
+    return False
+
+# Example usage:
+size = 9
+board = create_board(size)
+
+# Place a stone "X" at position (2, 3)
+position = ("2", "C")
+placed = place_on_board(board, "X", position)
+print("Stone placed:", placed)
+
+# Attempt to place a stone "O" at an invalid position
+position = ("10", "B")
+placed = place_on_board(board, "O", position)
+print("Stone placed:", placed)
+
+# Print the updated board
+for row in board:
+    print(' | '.join(row))
+    print('-' * (4 * size - 1))
+#=====================================================
