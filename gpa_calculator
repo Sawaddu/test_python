@@ -1,0 +1,36 @@
+def get_grade_value(marks):
+  """Returns the grade value for a given mark."""
+  grade_value = 0
+  if marks >= 80:
+    grade_value = 4
+  elif marks >= 70:
+    grade_value = 3
+  elif marks >= 60:
+    grade_value = 2
+  elif marks >= 50:
+    grade_value = 1
+  else:
+    grade_value = 0.3
+  return grade_value
+
+def get_gpa(unit_credit, stud_marks):
+    gpa = sum(get_grade_value(grade_value) * i for grade_value, i in zip(stud_marks, unit_credit))// sum(unit_credit)
+    return gpa
+#GPA = sum of (Unit_credit * Grade_value) / sum of Unit Credit
+
+students_data = [
+    ['Bruce', 72, 75, 100, 89],
+    ['Clark', 65, 72, 50, 80],
+    ['John', 40, 45, 60, 70],
+    ['Barry', 80, 85, 90, 70],
+    ['Diana', 78, 85, 95, 72],
+    ['Arthur', 25, 35, 0, 40]
+]
+
+unit_credit = [3, 4, 2, 5]
+
+for student in students_data:
+    name = student[0]
+    marks = student[1:]
+    gpa = get_gpa(unit_credit, marks)
+    print(f"{name} got {gpa:.3f} GPA")
