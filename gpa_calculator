@@ -57,7 +57,7 @@ def get_grade_value(marks):
   return grade_value
 
 def get_gpa(unit_credit, stud_marks):
-    gpa = sum(get_grade_value(grade_value) * i for grade_value, i in zip(stud_marks, unit_credit))// sum(unit_credit)
+    gpa = sum(get_grade_value(grade_value) * i for grade_value, i in zip(stud_marks, unit_credit))/ sum(unit_credit)
     return gpa
 #GPA = sum of (Unit_credit * Grade_value) / sum of Unit Credit
 
