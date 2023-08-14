@@ -16,13 +16,13 @@ def get_grade_value(marks):
 def get_gpa(unit_credit, stud_marks):
   """Returns the GPA for a student."""
   gpa = 0
-  total_unit_credit = sum(unit_credit)
+
   for marks, unit in zip(stud_marks, unit_credit):
     grade_value = get_grade_value(marks)
-    gpa += grade_value * unit
-  gpa /= total_unit_credit
+    gpa = gpa + (unit * grade_value)/sum(unit_credit)
+
   return gpa
-#using get_gpa function with two argument, unit_credit list and stud_marks list and returns the GPA of a student by the condition of GPA = sum of (Unit_credit * Grade_value) / sum of Unit Credit
+#GPA = sum of (Unit_credit * Grade_value) / sum of Unit Credit
 
 students_data = [
     ['Bruce', 72, 75, 100, 89],
