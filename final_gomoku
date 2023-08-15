@@ -1,0 +1,263 @@
+# noinspection PyUnresolvedReferences
+
+from random import random
+
+# noinspection PyUnresolvedReferences
+from random import choice, randint
+
+
+class Gomoku:
+    def __init__(self):
+        self.size = None
+        self.board = None
+        self.mode = None
+        self.turn = None
+
+    def create_board(self):
+        self.board = [[" " for i in range(self.size)] for j in range(self.size)]
+
+    def print_board(self):
+        size = len(self.board)
+
+        # Print column indices
+        print("  ", end="")
+        for col in range(size):
+            print(f" {chr(col + ord('A'))}  ", end="")
+        print()
+
+        # Print board rows with grid lines
+        for row in range(size):
+            print("   " + " -- " * (size - 1))
+            for col in range(size):
+                print(f" {self.board[row][col]} |", end="")
+            print(f" {row}")
+        print("   " + " -- " * (size - 1))
+
+    def is_occupied(self, x, y):
+        return self.board[x][y] != " "
+
+    def check_available_moves(self):
+        size = len(self.board)
+        available_moves = []
+
+        for row in range(size):
+            for col in range(size):
+                if not self.is_occupied(row, col):
+                    position = (str(row), chr(col + ord("A")))
+                    available_moves.append(position)
+
+        return available_moves
+
+    def place_on_board(self, stone, position):
+        x, y = position
+        if isinstance(x, int) and isinstance(y, str) and y.isalpha():
+            x = int(x)
+            y = ord(y.upper()) - ord("A")
+            if (
+                0 <= x < len(self.board)
+                and 0 <= y < len(self.board[0])
+                and not self.is_occupied(x, y)
+            ):
+                self.board[x][y] = stone
+                return True
+        return False
+
+    def check_for_winner(self):
+        size = len(self.board)
+
+        def check_line(line):
+            for i in range(size - 4):
+                if line[i : i + 5] == "XXXXX":
+                    return "X"
+                elif line[i : i + 5] == "OOOOO":
+                    return "O"
+            return None
+
+        # Check rows
+        for row in self.board:
+            result = check_line("".join(row))
+            if result:
+                return result
+
+        # Check columns
+        for col in range(size):
+            result = check_line("".join(self.board[row][col] for row in range(size)))
+            if result:
+                return result
+
+        # Check diagonals
+        for row in range(size - 4):
+            for col in range(size - 4):
+                diagonal = [self.board[row + i][col + i] for i in range(5)]
+                result = check_line("".join(diagonal))
+                if result:
+                    return result
+
+        for row in range(4, size):
+            for col in range(size - 4):
+                diagonal = [self.board[row - i][col + i] for i in range(5)]
+                result = check_line("".join(diagonal))
+                if result:
+                    return result
+
+        # Check for draw or ongoing game
+        if len(self.check_available_moves()) == 0:
+            return "Draw"
+
+        return None
+
+    def play_game(self):
+        while True:
+            print("Gomoku Game Menu:")
+            print("1. Start a Game")
+            print("2. Print the Board")
+            print("3. Place a Stone")
+            print("4. Reset the Game")
+            print("5. Exit")
+
+            choice = input("Enter your choice: ")
+
+            if choice == "1":
+                self.size = int(input("Enter board size (9, 13, 15): "))
+                if self.size not in [9, 13, 15]:
+                    print("Invalid size. Please choose 9, 13, or 15.")
+                    continue
+
+                self.mode = input("Enter mode (man or com): ")
+                if self.mode.lower() not in [
+                    "man",
+                    "com",
+                ]:
+                    print(
+                        "Invalid mode. Please choose Player vs. Player or Player vs. Computer."
+                    )
+                    continue
+
+                self.create_board()
+                self.turn = "X"
+                print("\n-------------Game started--------------")
+
+            elif choice == "2":
+                self.print_board()
+
+            elif choice == "3":
+                if self.board is None or self.mode is None:
+                    print("Please start a game first.")
+                    continue
+
+                self.print_board()
+
+                if self.mode.lower() == "man":
+                    stone = "X" if self.turn == "X" else "O"
+                    position_input = input(
+                        "Enter position (row column, e.g., 2 F): "
+                    ).strip()
+                    position = position_input.split()
+                    if len(position) != 2:
+                        print("Invalid input. Please enter row and column.")
+                        continue
+
+                    x, y = position[0], position[1]
+                    if (
+                        not x.isdigit()
+                        or not y.isalpha()
+                        or ord(y.upper()) - ord("A") >= self.size
+                    ):
+                        print("Invalid position. Please enter a valid position.")
+                        continue
+
+                    x = int(x)
+                    y = ord(y.upper()) - ord("A")
+
+                    if not self.is_occupied(x, y):
+                        self.place_on_board(stone, (x, y))
+                        self.print_board()
+                        winner = self.check_for_winner()
+                        if winner:
+                            print(f"Player {winner} wins!")
+                            self.board = None
+                            self.mode = None
+                        else:
+                            self.turn = "O" if self.turn == "X" else "X"
+
+                    else:
+                        print("Position is occupied. Try again.")
+
+                elif self.mode.lower() == "com":
+                    # Logic for player vs. computer mode
+                    def random_computer_player(self, player_move):
+                        player_x, player_y = int(player_move[0]), ord(
+                            player_move[1]
+                        ) - ord("A")
+                        neighborhood_size = 3
+                        valid_positions = []
+                        for dx in range(
+                            -neighborhood_size // 2, neighborhood_size // 2 + 1
+                        ):
+                            for dy in range(
+                                -neighborhood_size // 2, neighborhood_size // 2 + 1
+                            ):
+                                new_x = player_x + dx
+                                new_y = player_y + dy
+                                if (
+                                    0 <= new_x < self.size
+                                    and 0 <= new_y < self.size
+                                    and not self.is_occupied(new_x, new_y)
+                                ):
+                                    valid_positions.append((new_x, new_y))
+
+                        if not valid_positions:
+                            available_moves = self.check_available_moves()
+                            return random.choice(available_moves)
+                        chosen_position = random.choice(valid_positions)
+
+                        next_x = chosen_position[0]
+                        next_y = chr(chosen_position[1] + ord("A"))
+
+                        return (str(next_x), next_y)
+
+                    stone = "X" if self.turn == "X" else "O"
+                    player_move = input(
+                        "Enter position (row column, e.g., 2 F): "
+                    ).split()
+                    if len(player_move) != 2:
+                        print("Invalid input. Please enter row and column.")
+                        continue
+                    random_computer_player(self, player_move)
+                    computer_move = random_computer_player(self, player_move)
+                    print(
+                        f"Computer places {stone} at position {computer_move[0]} {computer_move[1]}"
+                    )
+
+                    if not self.is_occupied(
+                        int(computer_move[0]), ord(computer_move[1].upper()) - ord("A")
+                    ):
+                        self.place_on_board(stone, computer_move)
+                        self.print_board()
+                        winner = self.check_for_winner()
+                        if winner:
+                            print(f"Player {winner} wins!")
+                            self.board = None
+                            self.mode = None
+                        else:
+                            self.turn = "O" if self.turn == "X" else "X"
+                    else:
+                        print("Position is occupied. Try again.")
+
+            elif choice == "4":
+                self.board = None
+                self.mode = None
+                print("Game reset.")
+
+            elif choice == "5":
+                print("Exiting the program.")
+                break
+
+            else:
+                print("Invalid choice. Please choose a valid option.")
+
+
+# Initialize the game and start playing
+if __name__ == "__main__":
+    game = Gomoku()
+    game.play_game()
