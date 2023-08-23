@@ -1,10 +1,4 @@
-# noinspection PyUnresolvedReferences
-
-from random import random
-
-# noinspection PyUnresolvedReferences
-from random import choice, randint
-
+import random
 
 class Gomoku:
     def __init__(self):
